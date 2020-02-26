@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<string.h>
+#include<stdio.h>
 #include<unistd.h>
 #include<dirent.h>
 #include<ncurses.h>
@@ -17,14 +18,37 @@ char** generate() {
 	return screen;
 }
 
-void init(char** screen){
-	screen[rows/2][cols/2] = '*';
-	screen[(rows/2)][cols/2 + 1] = '*';
-	screen[(rows/2)][cols/2 - 1] = '*';
-	screen[(rows/2) - 1][cols/2] = '*';
-	screen[(rows/2) - 1][cols/2 + 1] = '*';
-   	screen[(rows/2) - 1][cols/2 + 2] = '*';
+void init(char** screen, char* filename){
+	//screen[rows/2][cols/2] = '*';
+	//screen[(rows/2)][cols/2 + 1] = '*';
+	//screen[(rows/2)][cols/2 - 1] = '*';
+	//screen[(rows/2) - 1][cols/2] = '*';
+	//screen[(rows/2) - 1][cols/2 + 1] = '*';
+   	//screen[(rows/2) - 1][cols/2 + 2] = '*';
 	// TODO read from conway file
+	int centery = rows/2;
+	int centerx = cols/2;
+
+	char file[100] = "patterns/";
+	strcat(file, filename);
+	FILE *fp =fopen(file, "r");
+	if (fp == NULL) {
+		printf("Can't open file for reading\n");
+		endwin();
+		exit(1);
+	}
+
+	char* line = NULL;
+	size_t len = 0;
+
+	while(getline(&line, &len, fp)) {
+		if (!strcmp(line,"0")) break;
+		int col = atoi(strtok(line, ","));
+		int row = atoi(strtok(NULL,","));
+		screen[centery + row][centerx + col] = '*';
+	}
+
+	fclose(fp);
 }
 
 
@@ -82,6 +106,7 @@ void display(char** state) {
 		}
 	}
 	refresh();
+	//  0.5 seconds
 	usleep(500000);
 }
 
@@ -105,17 +130,18 @@ int main(int argc, char* argv[]){
 		closedir(dr);
 		exit(1);
 	}
-	
+
 	initscr();
 	noecho();
-   	char** state = generate();
-	init(state);
+
+	char** state = generate();
+	init(state, argv[1]);
+	
 	while (1) {
 		display(state);
 		state = update(state);
 	}
 	
-	getch();
 	endwin();
 	return 0;
 }
