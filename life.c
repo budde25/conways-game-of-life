@@ -1,4 +1,7 @@
 #include<stdlib.h>
+#include<string.h>
+#include<unistd.h>
+#include<dirent.h>
 #include<ncurses.h>
 
 int rows,cols;
@@ -16,8 +19,11 @@ char** generate() {
 
 void init(char** screen){
 	screen[rows/2][cols/2] = '*';
+	screen[(rows/2)][cols/2 + 1] = '*';
+	screen[(rows/2)][cols/2 - 1] = '*';
 	screen[(rows/2) - 1][cols/2] = '*';
-	screen[(rows/2) + 1][cols/2] = '*';
+	screen[(rows/2) - 1][cols/2 + 1] = '*';
+   	screen[(rows/2) - 1][cols/2 + 2] = '*';
 	// TODO read from conway file
 }
 
@@ -76,18 +82,37 @@ void display(char** state) {
 		}
 	}
 	refresh();
+	usleep(500000);
 }
 
-int main(){
+int main(int argc, char* argv[]){
+	if (argc !=  2) {
+		printf("Usage: life <pattern>, life -list\n");
+		exit(1);
+	}
+	if (argc == 2 && !strcmp(argv[1],"-list")) {
+		struct dirent *de;
+		DIR *dr = opendir("patterns/.");
+		if (dr == NULL){
+			printf("Failed to open directory ./patterns\n");
+			exit(1);
+		}
+
+		while ((de = readdir(dr)) != NULL)
+			if (strcmp(de->d_name, ".") && strcmp(de->d_name, ".."))
+			printf("%s\n", de->d_name);
+
+		closedir(dr);
+		exit(1);
+	}
+	
 	initscr();
-	raw();
 	noecho();
    	char** state = generate();
 	init(state);
 	while (1) {
 		display(state);
 		state = update(state);
-		getch();
 	}
 	
 	getch();
