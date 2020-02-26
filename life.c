@@ -19,13 +19,6 @@ char** generate() {
 }
 
 void init(char** screen, char* filename){
-	//screen[rows/2][cols/2] = '*';
-	//screen[(rows/2)][cols/2 + 1] = '*';
-	//screen[(rows/2)][cols/2 - 1] = '*';
-	//screen[(rows/2) - 1][cols/2] = '*';
-	//screen[(rows/2) - 1][cols/2 + 1] = '*';
-   	//screen[(rows/2) - 1][cols/2 + 2] = '*';
-	// TODO read from conway file
 	int centery = rows/2;
 	int centerx = cols/2;
 
@@ -133,6 +126,7 @@ int main(int argc, char* argv[]){
 
 	initscr();
 	noecho();
+	curs_set(0);
 
 	char** state = generate();
 	init(state, argv[1]);
