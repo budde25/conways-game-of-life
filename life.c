@@ -16,6 +16,8 @@ char** generate() {
 
 void init(char** screen){
 	screen[rows/2][cols/2] = '*';
+	screen[(rows/2) - 1][cols/2] = '*';
+	screen[(rows/2) + 1][cols/2] = '*';
 	// TODO read from conway file
 }
 
@@ -29,35 +31,33 @@ int check(char** state, int row, int col) {
 
 	// make sure we dont go out of bounds
 	if (row == 0) starty = 0;
-	if (row == rows) endy = rows;
+	if (row == rows - 1) endy = rows - 2;
 	if (col == 0) startx = 0;
-	if (col == cols) endx = cols;
+	if (col == cols - 1) endx = cols - 2;
 
 	int count = 0;
-	for (int i = starty; i < endy; ++i) {
-		for(int j = startx; j < endx; ++j) {
-			if (state[i][j] == '*' && i != row && j != col) count++;
+	if (state[row][col] == '*') count--;
+	for (int i = starty; i <= endy; ++i) {
+		for(int j = startx; j <= endx; ++j) {
+			if (state[i][j]) count++;
 		}
 	}
-
+	//if (count > 0) printf("%i\n", count);
 	// check conways rules
-	int alive = state[row][col] == '*';
-	
-	if(!alive && count == 3) return 1;
-	else if(!alive) return 0;
+	if(state[row][col] != '*' && count == 3) return 1;
+	else if(state[row][col] != '*') return 0;
 	
 	if(count < 2) return 0;
 	if(count > 3) return 0;
 	return 1;
 }
 
-void update(char** state) {
+char** update(char** state) {
 	char** nextState = generate();
 	for (int i = 0; i < rows; ++i){
 		for (int j = 0; j < cols; ++j) {
-			if (check(state, i ,j)) {
-				nextState[i][j] = '*';
-			}
+			if (check(state, i ,j)) nextState[i][j] = '*';
+			else nextState[i][j] = '\0';
 		}
 	}
 	// free the memeory
@@ -65,11 +65,11 @@ void update(char** state) {
 		free(state[i]);
 	}
 	free(state);
-	
-	state = nextState;
+	return nextState;
 }
 
 void display(char** state) {
+	clear();
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
 			if(state[i][j] == '*') mvprintw(i, j, "*");
@@ -82,16 +82,14 @@ int main(){
 	initscr();
 	raw();
 	noecho();
-	printf("here\n"); 
-	char** state = generate();
+   	char** state = generate();
 	init(state);
-		printf("here\n"); 
-	while(1) {
+	while (1) {
 		display(state);
-		update(state);
+		state = update(state);
+		getch();
 	}
 	
-	refresh();
 	getch();
 	endwin();
 	return 0;
