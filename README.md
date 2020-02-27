@@ -7,7 +7,7 @@ This is an C implementation of the classic Conways Game of life. This was all pr
 The app requires nucurses to compile. Alternativly you can download the precomiled binary and run it.
 
 ### Compilation
-`gcc life.c -o life -lncurses` to compile output file will be name life.
+`gcc life.c -o life -lncurses` to compile output file will be named life.
 
 ### Usage
 `./life -list` will list all pattern files including user created ones.  
