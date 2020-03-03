@@ -1,5 +1,7 @@
 # Game of Life
 
+ [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  
+
 This is an C implementation of the classic Conways Game of life. This was all programmed in C and features displaying a variable screen sized game of life. It supports creating your own initial states by adding files to the patterns folder. 
 
 ## Getting started
