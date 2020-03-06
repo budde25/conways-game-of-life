@@ -7,6 +7,9 @@
 
 int rows,cols;
 
+/**
+ * generates a board
+ */
 char** generate() {
 	getmaxyx(stdscr, rows, cols);
 	
@@ -17,6 +20,9 @@ char** generate() {
 	return screen;
 }
 
+/**
+ * initalizes the game by reading the input file
+ */
 void init(char** screen, char* filename){
 	int centery = rows/2;
 	int centerx = cols/2;
@@ -42,7 +48,9 @@ void init(char** screen, char* filename){
 	fclose(fp);
 }
 
-
+/**
+ * Checks the board at position with predefined rules
+ */
 int check(char** state, int row, int col) {
 	int startx, starty, endx, endy;
 	startx = col - 1;
@@ -73,6 +81,9 @@ int check(char** state, int row, int col) {
 	return 1;
 }
 
+/**
+ * Updates the board each tick acording to the rules
+ */
 char** update(char** state) {
 	char** nextState = generate();
 	for (int i = 0; i < rows; ++i){
@@ -89,6 +100,9 @@ char** update(char** state) {
 	return nextState;
 }
 
+/**
+ * updates the output on the display
+ */
 void display(char** state) {
 	clear();
 	for (int i = 0; i < rows; ++i) {
@@ -101,7 +115,11 @@ void display(char** state) {
 	usleep(500000);
 }
 
+/**
+ * Main funtion loop for the game of life
+ */
 int main(int argc, char* argv[]){
+	// Checks the args
 	if (argc !=  2) {
 		printf("Usage: life <pattern>, life -list\n");
 		exit(1);
@@ -129,6 +147,7 @@ int main(int argc, char* argv[]){
 	char** state = generate();
 	init(state, argv[1]);
 	
+	// loop, ctrl-c to break
 	while (1) {
 		display(state);
 		state = update(state);
