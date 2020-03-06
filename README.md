@@ -19,7 +19,7 @@ The app requires nucurses to compile. Alternativly you can download the precomil
 To create a pattern simply create a new file in the patterns directory. Then begin listing coordinates one per line comma seperated for your initial condition. The coordonate 0,0 will be centered in the screen so make your coordinates relative to it.
 
 ## Created With
-* [NCurses](https://invisible-island.net/ncurses/announce.html#h2-overview) - A C library that allows creation of tui's
+* [NCurses](https://invisible-island.net/ncurses/announce.html#h2-overview) - A C library that allows creation of Tuis.
 
 ## Author
 Ethan Budd
