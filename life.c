@@ -7,7 +7,6 @@
 
 int rows,cols;
 
-
 char** generate() {
 	getmaxyx(stdscr, rows, cols);
 	
@@ -34,13 +33,12 @@ void init(char** screen, char* filename){
 	char* line = NULL;
 	size_t len = 0;
 
-	while(getline(&line, &len, fp)) {
+	while(getline(&line, &len, fp) > 0) {
 		if (!strcmp(line,"0")) break;
 		int col = atoi(strtok(line, ","));
 		int row = atoi(strtok(NULL,","));
 		screen[centery + row][centerx + col] = '*';
 	}
-
 	fclose(fp);
 }
 
