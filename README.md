@@ -6,7 +6,8 @@ This is an C implementation of the classic Conways Game of life. This was all pr
 
 ## Getting started
 
-The app requires nucurses to compile. Alternativly you can download the precomiled binary and run it.
+The app requires nucurses to compile. Alternativly you can download the precomiled 
+[binary](https://github.com/budde25/conways-game-of-life/releases/latest) and run it.
 
 ### Compilation
 `gcc life.c -o life -lncurses` to compile output file will be named life.
@@ -19,7 +20,7 @@ The app requires nucurses to compile. Alternativly you can download the precomil
 To create a pattern simply create a new file in the patterns directory. Then begin listing coordinates one per line comma seperated for your initial condition. The coordonate 0,0 will be centered in the screen so make your coordinates relative to it.
 
 ## Created With
-* [NCurses](https://invisible-island.net/ncurses/announce.html#h2-overview) - A C library that allows creation of tui's
+* [NCurses](https://invisible-island.net/ncurses/announce.html#h2-overview) - A C library that allows creation of TUIs.
 
 ## Author
 Ethan Budd
